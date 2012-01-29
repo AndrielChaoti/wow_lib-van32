@@ -39,8 +39,7 @@ function LibVan32:EnableDebugMode()
 	end
 end
 
----Disables your addon's "DebugMode" flag, which will stop messages
---flagged as debug to stop printing
+---Disables your addon's "DebugMode" flag, which will stop messages flagged as debug from printing.
 --@usage YourAddon:DisableDebugMode()
 function LibVan32:DisableDebugMode()
 	if not self.debugMode or self.DebugMode == true then
@@ -74,12 +73,12 @@ function LibVan32:ParseColorCodedString(str)
 	return parseMessage(str)
 end
 
---- Prints a color-coded message to the default chat frame. It supports the following escape sequences in strings:<br>
--- $V will be replaced with |cFFFF4B00<br>
--- $T will be replaced with |cFFAF96FF<br>
--- $E will be replaced with |cFFE6A0A0<br>
--- $G will be replaced with |cFF10FF10<br>
--- $C will be replaced with |r<br>
+--- Prints a color-coded message to the default chat frame. It supports the following escape sequences in strings:\\
+-- $V will be replaced with |cFFFF4B00\\
+-- $T will be replaced with |cFFAF96FF\\
+-- $E will be replaced with |cFFE6A0A0\\
+-- $G will be replaced with |cFF10FF10r\\
+-- $C will be replaced with |r\\
 -- The message output is: title: <Debug> [ERROR] message
 -- @usage YourAddon:PrintMessage("title", "message", true, true)
 -- @param title The short title used by the addon for chat. (string)
