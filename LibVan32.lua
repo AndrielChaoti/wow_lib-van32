@@ -23,21 +23,25 @@
 ------------------------------------------------------------------------
 ]]
 
-local MAJOR, MINOR = "LibVan32-1.0", 3
+local MAJOR, MINOR = "LibVan32-1.0", tonumber('@project-revision@')
 
 local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not LibVan32 then return end -- No upgrade needed
 
 
---- Enables Debug Mode
+---Enables your addon's "DebugMode" flag, which will cause all messages sent
+--to :PrintMessage() and isDebug is set, to show up in the chat frame.
+--@usage YourAddon:EnableDebugMode()
 function LibVan32:EnableDebugMode()
 	if not self.DebugMode or self.DebugMode == false then
 		self.DebugMode = true
 	end
 end
 
---- Disables Debug Mode
+---Disables your addon's "DebugMode" flag, which will stop messages
+--flagged as debug to stop printing
+--@usage YourAddon:DisableDebugMode()
 function LibVan32:DisableDebugMode()
 	if not self.debugMode or self.DebugMode == true then
 		self.DebugMode = false
@@ -62,23 +66,22 @@ local function parseMessage(message)
 	return str
 end
 
---- Parses a color-coded message for use with localization tables
---@usage ParseColorCodedString("string")
+---Parses a color-coded message for use with localization tables. See :PrintMessage for a list of color codes.
+--@usage local someString = YourAddon:ParseColorCodedString("string")
 --@param str The string to parse.
 --@return The string, with the color codes replaced with client escape sequences.
 function LibVan32:ParseColorCodedString(str)
 	return parseMessage(str)
 end
 
---- Prints a color-coded message to the default chat frame
--- Supports the following escape sequences in strings:
--- $V will be replaced with |cFFFF4B00
--- $T will be replaced with |cFFAF96FF
--- $E will be replaced with |cFFE6A0A0
--- $G will be replaced with |cFF10FF10
--- $C will be replaced with |r
+--- Prints a color-coded message to the default chat frame. It supports the following escape sequences in strings:<br>
+-- $V will be replaced with |cFFFF4B00<br>
+-- $T will be replaced with |cFFAF96FF<br>
+-- $E will be replaced with |cFFE6A0A0<br>
+-- $G will be replaced with |cFF10FF10<br>
+-- $C will be replaced with |r<br>
 -- The message output is: title: <Debug> [ERROR] message
--- @usage PrintMessage("title", "message", true, true)
+-- @usage YourAddon:PrintMessage("title", "message", true, true)
 -- @param title The short title used by the addon for chat. (string)
 -- @param message The message to print to the chat. (string)
 -- @param isDebug True if the message is not to be printed while the addon is in debug mode, otherwise false. (boolean) (optional)
@@ -125,12 +128,13 @@ end
 -- Timers Library
 LibVan32.timers = {}
 
---- Creates a timer that will call a function after a specific amount of time
--- @usage local timer = SetTimer(30, doSomething, false, nil, arg1, arg2)
+--- Creates a timer that will call a function after a specific amount of time.
+-- @usage local someTimer = YourAddon:SetTimer(30, doSomething, false, nil, arg1, arg2)
 -- @param interval A time, in seconds, before iterating 'callback'. (number)
 -- @param callback The code to excecute when the interval is passed. (function)
 -- @param recur If true, this timer will continue running until stopped. (1nil)
 -- @param uID A unique identifier for the timer. Used if you do not want more than one instance of any recurring timer (string/number)
+-- @param ... A list of arguments to pass to the callback function
 -- @return The table representing the timer created if successful, otherwise -1.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	local timer = {
@@ -154,8 +158,8 @@ function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	return timer
 end
 
---- Stops and removes an existing timer
--- @usage local killed = LibVan32:KillTimer(someTimer)
+--- Stops and removes an existing timer.
+-- @usage local killed = YourAddon:KillTimer(someTimer)
 -- @param timer The timer object created by 'SetTimer' you wish stopped. (Timer)
 -- @return True if the timer was stopped, otherwise nil.
 function LibVan32:KillTimer(timer)
@@ -201,8 +205,10 @@ local mixins = {
 	"EnableDebugMode",
 	"DisableDebugMode"
 }
+
 --- Embeds the library in the specified addon
 --@param target The table you want to embed the library into
+--@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon)
 function LibVan32:Embed(target)
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
