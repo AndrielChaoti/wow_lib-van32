@@ -204,8 +204,8 @@ local mixins = {
 --@param addonName The name of your addon. This is used automatically in PrintMessage (string)
 --@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "YourAddonName")
 function LibVan32:Embed(target, addonName)
-	if not target then error("Invalid Target. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")")
-	if not addonName then error("Invalid Name. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")")
+	if not target then error("Invalid Target. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")") end
+	if not addonName then error("Invalid Name. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")") end
 	
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
