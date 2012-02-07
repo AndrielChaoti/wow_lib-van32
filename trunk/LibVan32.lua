@@ -81,7 +81,7 @@ end
 -- The message output is: title: <Debug> [ERROR] message
 -- @usage YourAddon:PrintMessage("message", true, true)
 -- @param message The message to print to the chat. (string)
--- @param isDebug True if the message is not to be printed while the addon is in debug mode, otherwise false. (boolean) (optional)
+-- @param isDebug True if the message is for debugging purposes (Messages with this flag won't show up in chat if YourAddon.DebugMode is false) (boolean) (optional)
 -- @param isError True if the message is an error message, and should have [ERROR] prefixed to it. (boolean) (optional)
 function LibVan32:PrintMessage(message, isError, isDebug)
 	
