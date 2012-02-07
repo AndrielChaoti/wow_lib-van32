@@ -1,0 +1,3 @@
+##Title: LibVan32 |cff224477(lib)
+##Notes: Private Library, for use with Van32's Addons
+##Interface: 40300
