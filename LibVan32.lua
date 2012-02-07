@@ -73,10 +73,10 @@ function LibVan32:ParseColorCodedString(str)
 end
 
 --- Prints a color-coded message to the default chat frame. It supports the following escape sequences in strings:\\
--- $V will be replaced with |cFFFF4B00\\
--- $T will be replaced with |cFFAF96FF\\
--- $E will be replaced with |cFFE6A0A0\\
--- $G will be replaced with |cFF10FF10r\\
+-- $V will be replaced with |cFFff4b00 (<<color #ff4b00>>The text will be this color.<</color>>)\\
+-- $T will be replaced with |cFFaf96ff (<<color #af96ff>>The text will be this color.<</color>>)\\
+-- $E will be replaced with |cFFe60a0a (<<color #e60a0a>>The text will be this color.<</color>>)\\
+-- $G will be replaced with |cFF0ae60a (<<color #0ae60a>>The text will be this color.<</color>>)\\
 -- $C will be replaced with |r\\
 -- The message output is: title: <Debug> [ERROR] message
 -- @usage YourAddon:PrintMessage("message", true, true)
