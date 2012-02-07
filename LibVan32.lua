@@ -30,8 +30,7 @@ local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 if not LibVan32 then return end -- No upgrade needed
 
 
----Enables your addon's "DebugMode" flag, which will cause all messages sent
---to :PrintMessage() and isDebug is set, to show up in the chat frame.
+---Enable an addon's DebugMode, causing all calls to :PrintMessage() that are flagged as debug to print.
 --@usage YourAddon:EnableDebugMode()
 function LibVan32:EnableDebugMode()
 	if not self.DebugMode or self.DebugMode == false then
@@ -39,7 +38,7 @@ function LibVan32:EnableDebugMode()
 	end
 end
 
----Disables your addon's "DebugMode" flag, which will stop messages flagged as debug from printing.
+---Disable an addon's DebugMode
 --@usage YourAddon:DisableDebugMode()
 function LibVan32:DisableDebugMode()
 	if not self.debugMode or self.DebugMode == true then
@@ -80,18 +79,11 @@ end
 -- $G will be replaced with |cFF10FF10r\\
 -- $C will be replaced with |r\\
 -- The message output is: title: <Debug> [ERROR] message
--- @usage YourAddon:PrintMessage("title", "message", true, true)
--- @param title The short title used by the addon for chat. (string)
+-- @usage YourAddon:PrintMessage("message", true, true)
 -- @param message The message to print to the chat. (string)
 -- @param isDebug True if the message is not to be printed while the addon is in debug mode, otherwise false. (boolean) (optional)
 -- @param isError True if the message is an error message, and should have [ERROR] prefixed to it. (boolean) (optional)
-function LibVan32:PrintMessage(title, message, isError, isDebug)
-	
-	-- Title cannot be empty
-	if not title or title == "" then	
-		error("Usage: PrintMessage(\"message\", [isError], [isDebug]); title cannot be empty.")
-		return
-	end
+function LibVan32:PrintMessage(message, isError, isDebug)
 	
 	-- Message cannot be empty:
 	if not message or message == "" then
@@ -99,7 +91,7 @@ function LibVan32:PrintMessage(title, message, isError, isDebug)
 		return
 	end
 	
-	local oM = "$T" .. title .. "$C: "
+	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
 	
 	-- Check and append debug header
 	if isDebug then
@@ -127,14 +119,15 @@ end
 -- Timers Library
 LibVan32.timers = {}
 
---- Creates a timer that will call a function after a specific amount of time.
+---Create a timer with the specified settings\\
+--This can be used to have recurring events, or to excecute something after a set delay
 -- @usage local someTimer = YourAddon:SetTimer(30, doSomething, false, nil, arg1, arg2)
 -- @param interval A time, in seconds, before iterating 'callback'. (number)
 -- @param callback The code to excecute when the interval is passed. (function)
 -- @param recur If true, this timer will continue running until stopped. (1nil)
 -- @param uID A unique identifier for the timer. Used if you do not want more than one instance of any recurring timer (string/number)
 -- @param ... A list of arguments to pass to the callback function
--- @return The table representing the timer created if successful, otherwise -1.
+-- @return The table representing the timer created (if successful), otherwise -1.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	local timer = {
 		interval = interval,
@@ -157,16 +150,16 @@ function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	return timer
 end
 
---- Stops and removes an existing timer.
--- @usage local killed = YourAddon:KillTimer(someTimer)
--- @param timer The timer object created by 'SetTimer' you wish stopped. (Timer)
--- @return True if the timer was stopped, otherwise nil.
+---Stops an existing timer.
+-- @usage timerVar = YourAddon:KillTimer(timerVar)
+-- @param timer The timer object to destory. (timer)
+-- @return nil if the timer was stopped, otherwise 1
 function LibVan32:KillTimer(timer)
 	if LibVan32.timers[timer] then
 		LibVan32.timers[timer] = nil
-		return true
+		return nil
 	else
-		return
+		return 1
 	end
 end
 
@@ -205,13 +198,19 @@ local mixins = {
 	"DisableDebugMode"
 }
 
---- Embeds the library in the specified addon
---@param target The table you want to embed the library into
---@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon)
-function LibVan32:Embed(target)
+
+---Embeds the library into the specified table, and stores the addon's name for later use.
+--@param target The table you want to embed the library into (table)
+--@param addonName The name of your addon. This is used automatically in PrintMessage (string)
+--@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "YourAddonName")
+function LibVan32:Embed(target, addonName)
+	if not target then error("Invalid Target. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")")
+	if not addonName then error("Invalid Name. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")")
+	
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
 	end
+	target._AddonRegisteredName = addonName
 	LibVan32.mixinTargets[target] = true
 end
 
