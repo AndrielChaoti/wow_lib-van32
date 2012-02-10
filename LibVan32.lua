@@ -130,9 +130,10 @@ LibVan32.timers = {}
 -- For example: calling a function after 5 seconds, or updating a list of objects every half-second
 --@usage Timer = YourAddon:SetTimer(interval, callback, [recur, [uID]], [...])
 --@param interval The delay, in seconds, that you want before excecuting //callback//.//(float)//
---@param callbck The function to excecute when //interval// time has passed.//(function)//
+--@param callback The function to excecute when //interval// time has passed.//(function)//
 --@param recur Whether or not the timer will repeat each //interval// seconds.//(boolean)//
 --@param uID A Unique identifier assigned to a timer instance. You can use this, for instance, in a recursive function that iterates on a timer.//(anything)//\\Setting this field will deny creation of any new timers with the exact same uID. I reccomend using a string for this field, since it is global, however it will accept anything.
+--@param ... A list of arguments to pass to //callback//.//(vararg)//
 --@return The instance of the timer created, if successful, otherwise -1.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	--Redundancy checks
