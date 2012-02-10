@@ -30,7 +30,7 @@ local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 if not LibVan32 then return end -- No upgrade needed
 
 
----Enable an addon's DebugMode, causing all calls to :PrintMessage() that are flagged as debug to print.
+---Enable the calling addon's 'DebugMode' flag, allowing invisible debug messages to be printed.
 --@usage YourAddon:EnableDebugMode()
 function LibVan32:EnableDebugMode()
 	if not self.DebugMode or self.DebugMode == false then
@@ -38,7 +38,7 @@ function LibVan32:EnableDebugMode()
 	end
 end
 
----Disable an addon's DebugMode
+---Disable the calling addon's 'DebugMode' flag, causing invisible debug messages to no longer print.
 --@usage YourAddon:DisableDebugMode()
 function LibVan32:DisableDebugMode()
 	if not self.debugMode or self.DebugMode == true then
@@ -64,11 +64,13 @@ local function parseMessage(message)
 	return str
 end
 
----Parses a color-coded message for use with localization tables. See :PrintMessage for a list of color codes.
---@usage local someString = YourAddon:ParseColorCodedString("string")
---@param str The string to parse.
---@return The string, with the color codes replaced with client escape sequences.
+---Used to parse color-coded strings in the same way that PrintMessage does.\\
+-- Provides users with a way to easily color a dialog's strings in the same theme as the chat.
+--@usage string = YourAddon:ParseColorCodedString("string")
+--@param str The string that contains the color-codes.//(string)//
+--@return A string with library color codes replaced with the client's color escape sequence. (|cFFFFFFFF, for example)
 function LibVan32:ParseColorCodedString(str)
+	if type(str) ~= 'string' then error("str must be a string, was " .. type(str) ..".") end
 	return parseMessage(str)
 end
 
@@ -79,17 +81,12 @@ end
 -- $G will be replaced with |cFF0ae60a (<<color #0ae60a>>The text will be this color.<</color>>)\\
 -- $C will be replaced with |r\\
 -- The message output is: title: <Debug> [ERROR] message
--- @usage YourAddon:PrintMessage("message", true, true)
--- @param message The message to print to the chat. (string)
--- @param isDebug True if the message is for debugging purposes (Messages with this flag won't show up in chat if YourAddon.DebugMode is false) (boolean) (optional)
--- @param isError True if the message is an error message, and should have [ERROR] prefixed to it. (boolean) (optional)
+-- @usage YourAddon:PrintMessage("message", [isError], [isDebug])
+-- @param message The message to print to the chat.//(string)//
+-- @param isError Whether or not to flag the message as an error.//(boolean)[optional]//
+-- @param isDebug Whether or not to flag the message as debug.//(boolean)[optional]//
 function LibVan32:PrintMessage(message, isError, isDebug)
-	
-	-- Message cannot be empty:
-	if not message or message == "" then
-		error("Usage: PrintMessage(\"message\", [isError], [isDebug]); message cannot be empty.")
-		return
-	end
+	if type(message) ~= 'string' then error("message must be a string, was " .. type(message) ..".") end
 	
 	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
 	
@@ -115,20 +112,33 @@ function LibVan32:PrintMessage(message, isError, isDebug)
 	print(parseMessage(oM))
 end
 
+---Prints a message that can only be seen when the calling addon is in debug mode.\\
+--This is the same as calling YourAddon:PrintMessage("message", isError, true)
+--@usage YourAddon:PrintDebug("message", [isError])
+--@param message The message to print to the chat frame.//(string)//
+--@param isError Whether or not to flag the message as also being an error.//(boolean)[optional]//
+function LibVan32:PrintDebug(message, isError)
+	if type(message) ~= 'string' then error("message must be a string, was " .. type(message) ..".") end
+	
+	self:PrintMessage(message, isError, true)
+end
 
 -- Timers Library
 LibVan32.timers = {}
 
----Create a timer with the specified settings\\
---This can be used to have recurring events, or to excecute something after a set delay
--- @usage local someTimer = YourAddon:SetTimer(30, doSomething, false, nil, arg1, arg2)
--- @param interval A time, in seconds, before iterating 'callback'. (number)
--- @param callback The code to excecute when the interval is passed. (function)
--- @param recur If true, this timer will continue running until stopped. (1nil)
--- @param uID A unique identifier for the timer. Used if you do not want more than one instance of any recurring timer (string/number)
--- @param ... A list of arguments to pass to the callback function
--- @return The table representing the timer created (if successful), otherwise -1.
+---Create a recurring or single-tick timer.\\
+-- For example: calling a function after 5 seconds, or updating a list of objects every half-second
+--@usage Timer = YourAddon:SetTimer(interval, callback, [recur, [uID]], [...])
+--@param interval The delay, in seconds, that you want before excecuting //callback//.//(float)//
+--@param callbck The function to excecute when //interval// time has passed.//(function)//
+--@param recur Whether or not the timer will repeat each //interval// seconds.//(boolean)//
+--@param uID A Unique identifier assigned to a timer instance. You can use this, for instance, in a recursive function that iterates on a timer.//(anything)//\\Setting this field will deny creation of any new timers with the exact same uID. I reccomend using a string for this field, since it is global, however it will accept anything.
+--@return The instance of the timer created, if successful, otherwise -1.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
+	--Redundancy checks
+	if type(interval) ~= 'number' then error("interval must be a number, was" .. type(interval) .. ".") end
+	if type(callback) ~= 'function' then error("callback must be a function, was" .. type(callback) .. ".") end
+	
 	local timer = {
 		interval = interval,
 		callback = callback,
@@ -150,16 +160,17 @@ function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	return timer
 end
 
----Stops an existing timer.
--- @usage timerVar = YourAddon:KillTimer(timerVar)
--- @param timer The timer object to destory. (timer)
--- @return nil if the timer was stopped, otherwise 1
+---Stop an existing timer. This function requires a timer instance created with :SetTimer()
+--@usage YourAddon:KillTimer(timer)
+--@param timer The timer you wish to stop.//(SetTimer timer)//
+--@return This function returns nil if the timer was sucessfully stopped, making it easier for you to clear the variable you stored the timer instance in originally.\\If it did not find a timer, it will return the variable you sent to it, so that it's not completely lost.
 function LibVan32:KillTimer(timer)
+	if type(timer) ~= 'table' then error("timer must be a table, was " .. type(timer) ..".") end
 	if LibVan32.timers[timer] then
 		LibVan32.timers[timer] = nil
 		return nil
 	else
-		return 1
+		return timer
 	end
 end
 
@@ -199,13 +210,16 @@ local mixins = {
 }
 
 
----Embeds the library into the specified table, and stores the addon's name for later use.
---@param target The table you want to embed the library into (table)
---@param addonName The name of your addon. This is used automatically in PrintMessage (string)
---@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "YourAddonName")
+
+---Embed this library into an addon, and store it's 'short title' for addon output.\\
+--The addonName is used in PrintMessage, showing which addon is accosting the user with information.
+--@param target The table you want to embed the library into.//(table)//
+--@param addonName The short title of your addon, used in PrintMessage calls.//(string)//
+--@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "addonName")
 function LibVan32:Embed(target, addonName)
-	if not target then error("Invalid Target. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")") end
-	if not addonName then error("Invalid Name. usage LibStub:GetLibrary(\"LibVan32-1.0\"):Embed(YourAddon, \"YourAddonName\")") end
+	--Redundancy checks
+	if type(target) ~= 'table' then error("target must be a table, was " .. type(target) ..".") end
+	if type(addonName) ~= 'string' then error("addonName must be a string, was " .. type(addonName) ..".") end
 	
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
