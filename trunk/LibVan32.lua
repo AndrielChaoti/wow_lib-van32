@@ -86,7 +86,7 @@ end
 -- @param isError Whether or not to flag the message as an error.//(boolean)[optional]//
 -- @param isDebug Whether or not to flag the message as debug.//(boolean)[optional]//
 function LibVan32:PrintMessage(message, isError, isDebug)
-	if type(message) ~= 'string' then error("message must be a string, was " .. type(message) ..".") end
+	if type(message) ~= 'string' then error("bad argument #1 to \'PrintMessage\', (string expected, got " .. type(message) ..")") end
 	
 	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
 	
@@ -118,7 +118,7 @@ end
 --@param message The message to print to the chat frame.//(string)//
 --@param isError Whether or not to flag the message as also being an error.//(boolean)[optional]//
 function LibVan32:PrintDebug(message, isError)
-	if type(message) ~= 'string' then error("message must be a string, was " .. type(message) ..".") end
+	if type(message) ~= 'string' then error("bad argument #1 to \'PrintDebug\', (string expected, got " .. type(message) ..")") end
 	
 	self:PrintMessage(message, isError, true)
 end
@@ -137,8 +137,8 @@ LibVan32.timers = {}
 --@return The instance of the timer created, if successful, otherwise -1.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	--Redundancy checks
-	if type(interval) ~= 'number' then error("interval must be a number, was" .. type(interval) .. ".") end
-	if type(callback) ~= 'function' then error("callback must be a function, was" .. type(callback) .. ".") end
+	if type(interval) ~= 'number' then error("bad argument #1 to \'SetTimer\', (number expected, got " .. type(message) ..")") end
+	if type(callback) ~= 'function' then error("bad argument #2 to \'SetTimer\', (function expected, got " .. type(message) ..")") end
 	
 	local timer = {
 		interval = interval,
@@ -166,7 +166,7 @@ end
 --@param timer The timer you wish to stop.//(SetTimer timer)//
 --@return This function returns nil if the timer was sucessfully stopped, making it easier for you to clear the variable you stored the timer instance in originally.\\If it did not find a timer, it will return the variable you sent to it, so that it's not completely lost.
 function LibVan32:KillTimer(timer)
-	if type(timer) ~= 'table' then error("timer must be a table, was " .. type(timer) ..".") end
+	if type(timer) ~= 'table' then error("bad argument #1 to \'KillTimer\', (table expected, got " .. type(message) ..")") end
 	if LibVan32.timers[timer] then
 		LibVan32.timers[timer] = nil
 		return nil
@@ -220,8 +220,8 @@ local mixins = {
 --@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "addonName")
 function LibVan32:Embed(target, addonName)
 	--Redundancy checks
-	if type(target) ~= 'table' then error("target must be a table, was " .. type(target) ..".") end
-	if type(addonName) ~= 'string' then error("addonName must be a string, was " .. type(addonName) ..".") end
+	if type(target) ~= 'table' then error("bad argument #1 to \'Embed\', (table expected, got " .. type(message) ..")") end
+	if type(addonName) ~= 'string' then error("bad argument #2 to \'Embed\', (string expected, got " .. type(message) ..")") end
 	
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
