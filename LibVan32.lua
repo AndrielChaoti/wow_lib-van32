@@ -1,7 +1,7 @@
 ﻿--[[
 ------------------------------------------------------------------------
 	Project: LibVan32
-	File: Core, revision 3
+	File: Core, revision @project-revision@
 	Date: 11-Oct-2011
 	Purpose: Library for common addon functions
 	Credits: Code written by Vandesdelca32
@@ -191,7 +191,7 @@ local function OnUpdate(self, elapsed)
 			   t.update = 0
 			else
 			   LibVan32.timers[t] = nil
-			   if not success then error("Timer Callback failed:" .. rv, 2) end
+			   if not success then error("Timer Callback failed:" .. rv, 0) end
 			end
 		 end
 	  end
@@ -230,6 +230,7 @@ function LibVan32:Embed(target, addonName)
 	LibVan32.mixinTargets[target] = true
 end
 
+-- Update the old embeds
 for target, _ in pairs(LibVan32.mixinTargets) do
-	LibVan32:Embed(target)
+	LibVan32:Embed(target, target._AddonRegisteredName)
 end
