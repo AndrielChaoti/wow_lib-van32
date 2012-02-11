@@ -137,8 +137,8 @@ LibVan32.timers = {}
 --@return The instance of the timer created, if successful, otherwise -1.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	--Redundancy checks
-	if type(interval) ~= 'number' then error("bad argument #1 to \'SetTimer\', (number expected, got " .. type(message) ..")", 2) end
-	if type(callback) ~= 'function' then error("bad argument #2 to \'SetTimer\', (function expected, got " .. type(message) ..")", 2) end
+	if type(interval) ~= 'number' then error("bad argument #1 to \'SetTimer\', (number expected, got " .. type(interval) ..")", 2) end
+	if type(callback) ~= 'function' then error("bad argument #2 to \'SetTimer\', (function expected, got " .. type(callback) ..")", 2) end
 	
 	local timer = {
 		interval = interval,
@@ -166,7 +166,7 @@ end
 --@param timer The timer you wish to stop.//(SetTimer timer)//
 --@return This function returns nil if the timer was sucessfully stopped, making it easier for you to clear the variable you stored the timer instance in originally.\\If it did not find a timer, it will return the variable you sent to it, so that it's not completely lost.
 function LibVan32:KillTimer(timer)
-	if type(timer) ~= 'table' then error("bad argument #1 to \'KillTimer\', (table expected, got " .. type(message) ..")", 2) end
+	if type(timer) ~= 'table' then error("bad argument #1 to \'KillTimer\', (table expected, got " .. type(timer) ..")", 2) end
 	if LibVan32.timers[timer] then
 		LibVan32.timers[timer] = nil
 		return nil
@@ -220,8 +220,8 @@ local mixins = {
 --@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "addonName")
 function LibVan32:Embed(target, addonName)
 	--Redundancy checks
-	if type(target) ~= 'table' then error("bad argument #1 to \'Embed\', (table expected, got " .. type(message) ..")", 2) end
-	if type(addonName) ~= 'string' then error("bad argument #2 to \'Embed\', (string expected, got " .. type(message) ..")", 2) end
+	if type(target) ~= 'table' then error("bad argument #1 to \'Embed\', (table expected, got " .. type(target) ..")", 2) end
+	if type(addonName) ~= 'string' then error("bad argument #2 to \'Embed\', (string expected, got " .. type(addonName) ..")", 2) end
 	
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
