@@ -207,7 +207,8 @@ local mixins = {
 	"PrintMessage",
 	"ParseColorCodedString",
 	"EnableDebugMode",
-	"DisableDebugMode"
+	"DisableDebugMode",
+	"PrintDebug"
 }
 
 
