@@ -35,6 +35,10 @@ if not LibVan32 then return end -- No upgrade needed
 function LibVan32:EnableDebugMode()
 	if not self.DebugMode or self.DebugMode == false then
 		self.DebugMode = true
+		
+		-- Show ChatFrame10, where we're going to put the messages:
+		ChatFrame10:Show()
+		SetChatWindowName(10, "LibVan32_DEBUG")
 	end
 end
 
@@ -43,6 +47,9 @@ end
 function LibVan32:DisableDebugMode()
 	if not self.debugMode or self.DebugMode == true then
 		self.DebugMode = false
+		
+		-- Hide ChatFrame10:
+		ChatFrame10:Hide()
 	end
 end
 
@@ -89,15 +96,14 @@ function LibVan32:PrintMessage(message, isError, isDebug)
 	if type(message) ~= 'string' then error("bad argument #1 to \'PrintMessage\', (string expected, got " .. type(message) ..")", 2) end
 	
 	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
+	local oF = DEFAULT_CHAT_FRAME or ChatFrame1
 	
 	-- Check and append debug header
-	if isDebug then
-		if self.DebugMode then
-			oM = oM .. "<Debug> "
-		else
-			-- Do not print a message if debug mode is not enabled
-			return
-		end
+	if isDebug and self.DebugMode then
+		oF = ChatFrame10
+		oM = oM .. "<Debug> "
+	elseif not self.DebugMode then
+		return
 	end
 	
 	-- Check and add [ERROR] header
@@ -109,7 +115,7 @@ function LibVan32:PrintMessage(message, isError, isDebug)
 	oM = oM .. message
 	
 	-- Parse the color codes
-	print(parseMessage(oM))
+	oF:AddMessage(parseMessage(oM))
 end
 
 ---Prints a message that can only be seen when the calling addon is in debug mode.\\
