@@ -23,7 +23,7 @@
 ------------------------------------------------------------------------
 ]]
 
-local MAJOR, MINOR = "LibVan32-1.0", 80
+local MAJOR, MINOR = "LibVan32-1.0", tonumber("@project-revision@" or "9900") + 99
 
 local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -81,15 +81,18 @@ end
 -- $G will be replaced with |cFF0ae60a (<<color #0ae60a>>The text will be this color.<</color>>)\\
 -- $C will be replaced with |r\\
 -- The message output is: title: <Debug> [ERROR] message
--- @usage YourAddon:PrintMessage("message", [isError], [isDebug])
+-- @usage YourAddon:PrintMessage("message", [isError], [isDebug], [chatFrame])
 -- @param message The message to print to the chat.//(string)//
 -- @param isError Whether or not to flag the message as an error.//(boolean)[optional]//
 -- @param isDebug Whether or not to flag the message as debug.//(boolean)[optional]//
-function LibVan32:PrintMessage(message, isError, isDebug)
+--@param chatFrame The Frame to send the message through. This frame needs to have an AddMessage method.//(Frame)[optional]//
+function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	if type(message) ~= 'string' then error("bad argument #1 to \'PrintMessage\', (string expected, got " .. type(message) ..")", 2) end
 	
+	if chatFrame and (not chatFrame:AddMessage) then error("invalid chatFrame specified", 2) end
+	
 	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
-	local oF = DEFAULT_CHAT_FRAME or ChatFrame1
+	local oF = chatFrame or DEFAULT_CHAT_FRAME
 	
 	-- Check and append debug header
 	if isDebug then
@@ -106,18 +109,19 @@ function LibVan32:PrintMessage(message, isError, isDebug)
 	oM = oM .. message
 	
 	-- Parse the color codes
-	oF:AddMessage(parseMessage(oM))
+	return oF:AddMessage(parseMessage(oM))
 end
 
 ---Prints a message that can only be seen when the calling addon is in debug mode.\\
 --This is the same as calling YourAddon:PrintMessage("message", isError, true)
---@usage YourAddon:PrintDebug("message", [isError])
+--@usage YourAddon:PrintDebug("message", [isError], [chatFrame])
 --@param message The message to print to the chat frame.//(string)//
 --@param isError Whether or not to flag the message as also being an error.//(boolean)[optional]//
-function LibVan32:PrintDebug(message, isError)
+--@param chatFrame The Frame to send the message through. This frame needs to have an AddMessage method.//(Frame)[optional]//
+function LibVan32:PrintDebug(message, isError, chatFrame)
 	if type(message) ~= 'string' then error("bad argument #1 to \'PrintDebug\', (string expected, got " .. type(message) ..")", 2) end
 	
-	self:PrintMessage(message, isError, true)
+	return self:PrintMessage(message, isError, true, chatFrame)
 end
 
 -- Timers Library
@@ -211,7 +215,8 @@ local mixins = {
 
 
 ---Embed this library into an addon, and store it's 'short title' for addon output.\\
---The addonName is used in PrintMessage, showing which addon is accosting the user with information.
+--The addonName is used in PrintMessage, showing which addon is accosting the user with information.\\
+--If you wish to change the default color used by the title, it's possible, by adding your color string in the "addonName" field.
 --@param target The table you want to embed the library into.//(table)//
 --@param addonName The short title of your addon, used in PrintMessage calls.//(string)//
 --@usage LibStub:GetLibrary("LibVan32-1.0"):Embed(YourAddon, "addonName")
