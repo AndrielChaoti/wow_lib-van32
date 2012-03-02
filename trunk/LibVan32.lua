@@ -2,11 +2,11 @@
 ------------------------------------------------------------------------
 	Project: LibVan32
 	File: Core, revision @project-revision@
-	Date: 11-Oct-2011
+	Date: @project-date-iso@
 	Purpose: Library for common addon functions
 	Credits: Code written by Vandesdelca32
 
-	Copyright (C) 2011  Vandesdelca32
+	Copyright (C) 2011-2012  Vandesdelca32
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ end
 function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	if type(message) ~= 'string' then error("bad argument #1 to \'PrintMessage\', (string expected, got " .. type(message) ..")", 2) end
 	
-	if chatFrame and (not chatFrame:AddMessage) then error("invalid chatFrame specified", 2) end
+	if chatFrame and (not chatFrame.AddMessage) then error("invalid chatFrame specified", 2) end
 	
 	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
 	local oF = chatFrame or DEFAULT_CHAT_FRAME
