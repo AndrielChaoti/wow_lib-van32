@@ -124,6 +124,18 @@ function LibVan32:PrintDebug(message, isError, chatFrame)
 	return self:PrintMessage(message, isError, true, chatFrame)
 end
 
+---Prints a message that will be flagged to the user as an error.\\
+--This is the same as calling YourAddon:PrintMessage("message", true, isDebug)
+--@usage YourAddon:PrintErr("message", [isDebug], [chatFrame])
+--@param message The message to print to the chat frame.//(string)
+--@param isDebug Also mark this message as a debug message.//(boolean)[optional]//\\(It's prefferred that you call :PrintDebug("message", true) for this)
+--@param chatFrame The Frame object to send the message to.//(Frame)[optional]//\\The frame requires the AddMessage method.
+function LibVan32:PrintErr(message, isDebug, chatFrame)
+	if type(message) ~= 'string' then error("bad argument #1 to \'PrintError\', (string expected, got " .. type(message) ..")", 2) end
+	
+	return self:PrintMessage(message, true, isDebug, chatFrame)
+end
+
 -- Timers Library
 LibVan32.timers = {}
 
