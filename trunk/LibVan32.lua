@@ -33,16 +33,16 @@ if not LibVan32 then return end -- No upgrade needed
 ---Enable the calling addon's 'DebugMode' flag, allowing invisible debug messages to be printed.
 --@usage YourAddon:EnableDebugMode()
 function LibVan32:EnableDebugMode()
-	if not self.DebugMode or self.DebugMode == false then
-		self.DebugMode = true
+	if not self._DebugMode or self._DebugMode == false then
+		self._DebugMode = true
 	end
 end
 
 ---Disable the calling addon's 'DebugMode' flag, causing invisible debug messages to no longer print.
 --@usage YourAddon:DisableDebugMode()
 function LibVan32:DisableDebugMode()
-	if not self.debugMode or self.DebugMode == true then
-		self.DebugMode = false
+	if not self._DebugMode or self.DebugMode == true then
+		self._DebugMode = false
 	end
 end
 
@@ -63,6 +63,13 @@ local function parseMessage(message)
 	end
 	return str
 end
+
+function LibVan32:SetDefaultChatFrame(ChatFrame)
+	if chatFrame and (not chatFrame.AddMessage) then error("invalid chatFrame specified", 2) end
+	
+	self._DefaultChatFrame = ChatFrame
+end
+
 
 ---Used to parse color-coded strings in the same way that PrintMessage does.\\
 -- Provides users with a way to easily color a dialog's strings in the same theme as the chat.
@@ -92,7 +99,7 @@ function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	if chatFrame and (not chatFrame.AddMessage) then error("invalid chatFrame specified", 2) end
 	
 	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
-	local oF = chatFrame or DEFAULT_CHAT_FRAME
+	local oF = (chatFrame or self._DefaultChatFrame) or DEFAULT_CHAT_FRAME
 	
 	-- Check and append debug header
 	if isDebug then
