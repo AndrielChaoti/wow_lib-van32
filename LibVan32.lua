@@ -23,38 +23,41 @@
 ------------------------------------------------------------------------
 ]]
 
-local MAJOR, MINOR = "LibVan32-1.0", tonumber("@project-revision@" or "9900") + 99
+local MAJOR, MINOR = "LibVan32-1.0", tonumber("@project-revision@")
+
+if not MINOR then
+	MINOR = 9999
+else
+	MINOR = MINOR + 99
+end
+
 
 local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not LibVan32 then return end -- No upgrade needed
 
-
----Enable the calling addon's 'DebugMode' flag, allowing invisible debug messages to be printed.
---@usage YourAddon:EnableDebugMode()
-function LibVan32:EnableDebugMode()
-	if not self._DebugMode or self._DebugMode == false then
-		self._DebugMode = true
-	end
-end
-
----Disable the calling addon's 'DebugMode' flag, causing invisible debug messages to no longer print.
---@usage YourAddon:DisableDebugMode()
-function LibVan32:DisableDebugMode()
-	if not self._DebugMode or self.DebugMode == true then
-		self._DebugMode = false
-	end
-end
-
 -- Parse the $X Color codes from the PrintMessage function
 local function parseMessage(message)
 	if not message then return end
 	local cT = {
-		["$V"] = "|cFFFF4B00",
-		["$T"] = "|cFFAF96FF",
-		["$E"] = "|cFFE60A0A",
-		["$G"] = "|cFF0AE60A",
-		["$C"] = "|r",
+		["§0"] = "|cFF000000",
+		["§1"] = "|cFF000080",
+		["§2"] = "|cFF008000",
+		["§3"] = "|cFF008080",
+		["§4"] = "|cFF800000",
+		["§5"] = "|cFF800080",
+		["§6"] = "|cFF808000",
+		["§7"] = "|cFFC0C0C0",
+		["§8"] = "|cFF808080",
+		["§9"] = "|cFF0000FF",
+		["§a"] = "|cFF00FF00",
+		["§b"] = "|cFF00FFFF",
+		["§c"] = "|cFFFF0000",
+		["§d"] = "|cFFFF00FF",
+		["§e"] = "|cFFFFFF00",
+		["§f"] = "|cFFFFFFFF",
+		["§r"] = "|r",
+		["§T"] = "|cFFAF96FF",
 	}
 	local str, newStr = message
 	for k, v in pairs(cT) do
@@ -64,6 +67,10 @@ local function parseMessage(message)
 	return str
 end
 
+---Sets the default chat frame used to print messages.
+
+--@usage YourAddon:SetDefaultChatFrame(ChatFrame2)
+--@param ChatFrame The frame you want to send messages to. It MUST have an .AddMessage entry
 function LibVan32:SetDefaultChatFrame(ChatFrame)
 	if chatFrame and (not chatFrame.AddMessage) then error("invalid chatFrame specified", 2) end
 	
@@ -82,11 +89,7 @@ function LibVan32:ParseColorCodedString(str)
 end
 
 --- Prints a color-coded message to the default chat frame. It supports the following escape sequences in strings:\\
--- $V will be replaced with |cFFff4b00 (<<color #ff4b00>>The text will be this color.<</color>>)\\
--- $T will be replaced with |cFFaf96ff (<<color #af96ff>>The text will be this color.<</color>>)\\
--- $E will be replaced with |cFFe60a0a (<<color #e60a0a>>The text will be this color.<</color>>)\\
--- $G will be replaced with |cFF0ae60a (<<color #0ae60a>>The text will be this color.<</color>>)\\
--- $C will be replaced with |r\\
+--Supports Minecraft style escape sequences (§x), where x corresponds to a single hex digit. See library code for color conversions.
 -- The message output is: title: <Debug> [ERROR] message
 -- @usage YourAddon:PrintMessage("message", [isError], [isDebug], [chatFrame])
 -- @param message The message to print to the chat.//(string)//
@@ -247,7 +250,11 @@ function LibVan32:Embed(target, addonName)
 	for _, name in pairs(mixins) do
 		target[name] = LibVan32[name]
 	end
+	-- Pass Lib variables to the addon as well on embed.
 	target._AddonRegisteredName = addonName
+	target._DefaultChatFrame = ChatFrame1
+	target._DebugMode = false
+	
 	LibVan32.mixinTargets[target] = true
 end
 
