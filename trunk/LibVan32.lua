@@ -109,7 +109,7 @@ function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	-- Check and append debug header
 	if isDebug then
 		if not self._DebugMode then return end
-		oM = oM .. "§1<Debug>§r "
+		oM = oM .. "§8<Debug>§r "
 	end
 	
 	-- Check and add [ERROR] header
