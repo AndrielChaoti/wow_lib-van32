@@ -58,6 +58,8 @@ local function parseMessage(message)
 		["§f"] = "|cFFFFFFFF",
 		["§r"] = "|r",
 		["§T"] = "|cFFAF96FF",
+		["§E"] = "|cFFff1919",
+		
 	}
 	local str, newStr = message
 	for k, v in pairs(cT) do
@@ -101,18 +103,18 @@ function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	
 	if chatFrame and (not chatFrame.AddMessage) then error("invalid chatFrame specified", 2) end
 	
-	local oM = "$T" .. self._AddonRegisteredName .. "$C: "
+	local oM = "§T" .. self._AddonRegisteredName .. "§r: "
 	local oF = (chatFrame or self._DefaultChatFrame) or DEFAULT_CHAT_FRAME
 	
 	-- Check and append debug header
 	if isDebug then
-		if not self.DebugMode then return end
-		oM = oM .. "<Debug> "
+		if not self._DebugMode then return end
+		oM = oM .. "§1<Debug>§r "
 	end
 	
 	-- Check and add [ERROR] header
 	if isError then
-		oM = oM .. "$E[ERROR]$C "
+		oM = oM .. "§E[ERROR]§r "
 	end
 	
 	-- Append the actual message
@@ -228,13 +230,11 @@ local mixins = {
 	"KillTimer",
 	"SetTimer",
 	"PrintMessage",
+	"PrintErr",
+	"PrintDebug",
+	"SetDefaultChatFrame",
 	"ParseColorCodedString",
-	"EnableDebugMode",
-	"DisableDebugMode",
-	"PrintDebug"
 }
-
-
 
 ---Embed this library into an addon, and store it's 'short title' for addon output.\\
 --The addonName is used in PrintMessage, showing which addon is accosting the user with information.\\
