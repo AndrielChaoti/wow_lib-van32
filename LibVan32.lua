@@ -90,9 +90,9 @@ function LibVan32:ParseColorCodedString(str)
 	return parseMessage(str)
 end
 
---- Prints a color-coded message to the default chat frame. It supports the following escape sequences in strings:\\
---Supports Minecraft style escape sequences (§x), where x corresponds to a single hex digit. See library code for color conversions.
--- The message output is: title: <Debug> [ERROR] message
+--- Prints a color-coded message to the default chat frame.\\
+--Supports Minecraft style escape sequences (§x), where x corresponds to a single hex digit. See library code for color conversions.\\
+--The message output is: title: <Debug> [ERROR] message
 -- @usage YourAddon:PrintMessage("message", [isError], [isDebug], [chatFrame])
 -- @param message The message to print to the chat.//(string)//
 -- @param isError Whether or not to flag the message as an error.//(boolean)[optional]//
