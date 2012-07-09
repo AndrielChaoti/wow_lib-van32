@@ -25,6 +25,7 @@
 
 local MAJOR, MINOR = "LibVan32-1.0", tonumber("@project-revision@")
 
+-- This is for debug builds
 if not MINOR then
 	MINOR = 9999
 else
@@ -58,7 +59,7 @@ local function parseMessage(message)
 		["§f"] = "|cFFFFFFFF",
 		["§r"] = "|r",
 		["§T"] = "|cFFAF96FF",
-		["§E"] = "|cFFff1919",
+		--["§E"] = "|cFFff1919",
 		
 	}
 	local str, newStr = message
@@ -114,7 +115,7 @@ function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	
 	-- Check and add [ERROR] header
 	if isError then
-		oM = oM .. "§E[ERROR]§r "
+		oM = oM .. "§c[ERROR]§r "
 	end
 	
 	-- Append the actual message
