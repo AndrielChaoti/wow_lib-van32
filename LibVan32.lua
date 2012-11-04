@@ -41,24 +41,25 @@ if not LibVan32 then return end -- No upgrade needed
 local function parseMessage(message)
 	if not message then return end
 	local cT = {
-		["§0"] = "|cFF000000",
-		["§1"] = "|cFF000080",
-		["§2"] = "|cFF008000",
-		["§3"] = "|cFF008080",
-		["§4"] = "|cFF800000",
-		["§5"] = "|cFF800080",
-		["§6"] = "|cFF808000",
-		["§7"] = "|cFFC0C0C0",
-		["§8"] = "|cFF808080",
-		["§9"] = "|cFF0000FF",
-		["§a"] = "|cFF00FF00",
-		["§b"] = "|cFF00FFFF",
-		["§c"] = "|cFFFF0000",
-		["§d"] = "|cFFFF00FF",
-		["§e"] = "|cFFFFFF00",
-		["§f"] = "|cFFFFFFFF",
-		["§r"] = "|r",
-		["§T"] = "|cFFAF96FF",
+		["§0"] = "|cFF000000", 	-- black
+		["§1"] = "|cFF000080", 	-- dkblue
+		["§2"] = "|cFF008000", 	-- dkgreen
+		["§3"] = "|cFF008080", 	-- teal
+		["§4"] = "|cFF800000", 	-- dkred
+		["§5"] = "|cFF800080", 	-- violet
+		["§6"] = "|cFF808000", 	-- dkgold
+		["§7"] = "|cFFC0C0C0", 	-- ltgrey
+		["§8"] = "|cFF808080", 	-- dkgrey
+		["§9"] = "|cFF0000FF", 	-- blue
+		["§a"] = "|cFF00FF00", 	-- green
+		["§b"] = "|cFF00FFFF", 	-- cyan
+		["§c"] = "|cFFFF0000", 	-- red
+		["§d"] = "|cFFFF00FF", 	-- magenta
+		["§e"] = "|cFFFFFF00", 	-- yellow
+		["§f"] = "|cFFFFFFFF", 	-- white
+		["§r"] = "|r",			-- reset
+		["§T"] = "|cFFAF96FF",	-- Title, (ltpurple)
+		["#c"] = "|cFF", 		-- custom color
 		--["§E"] = "|cFFff1919",
 		
 	}
