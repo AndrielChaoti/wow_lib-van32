@@ -2,5 +2,6 @@
 ##Notes: Private Library, for use with Van32's Addons
 ##Interface: 50001
 ##Version: @project-version@
+##Dependencies: LibStub
 
 LibVan32.lua
