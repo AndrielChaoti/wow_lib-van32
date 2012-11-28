@@ -1,0 +1,7 @@
+##Title: Lib|cffAF96FFVan32|r
+##Notes: Private Library, for use with Van32's Addons
+##Interface: 50100
+##Version: @project-version@
+##Dependencies: LibStub
+
+LibVan32.lua
