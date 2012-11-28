@@ -58,7 +58,7 @@ local function parseMessage(message)
 		["§d"]="|cFFF050F0",	-- Pink
 		["§e"]="|cFFF0F050",	-- Yellow
 		["§f"]="|cFFF0F0F0",	-- White
-		["§r"]="|r"				-- reset
+		["§r"]="|r",			-- reset
 		["§T"]="|cFFAF96FF",	-- Title, (ltpurple)
 		["#c"]="|cFF", 			-- custom color
 		--["§E"] = "|cFFff1919",
