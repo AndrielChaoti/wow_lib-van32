@@ -41,25 +41,26 @@ if not LibVan32 then return end -- No upgrade needed
 local function parseMessage(message)
 	if not message then return end
 	local cT = {
-		["§0"] = "|cFF000000", 	-- black
-		["§1"] = "|cFF000080", 	-- dkblue
-		["§2"] = "|cFF008000", 	-- dkgreen
-		["§3"] = "|cFF008080", 	-- teal
-		["§4"] = "|cFF800000", 	-- dkred
-		["§5"] = "|cFF800080", 	-- violet
-		["§6"] = "|cFF808000", 	-- dkgold
-		["§7"] = "|cFFC0C0C0", 	-- ltgrey
-		["§8"] = "|cFF808080", 	-- dkgrey
-		["§9"] = "|cFF0000FF", 	-- blue
-		["§a"] = "|cFF00FF00", 	-- green
-		["§b"] = "|cFF00FFFF", 	-- cyan
-		["§c"] = "|cFFFF0000", 	-- red
-		["§d"] = "|cFFFF00FF", 	-- magenta
-		["§e"] = "|cFFFFFF00", 	-- yellow
-		["§f"] = "|cFFFFFFFF", 	-- white
-		["§r"] = "|r",			-- reset
-		["§T"] = "|cFFAF96FF",	-- Title, (ltpurple)
-		["#c"] = "|cFF", 		-- custom color
+		-- Color codes kindly borrowed from Minecraft!
+		["§0"]="|cFF000000",	-- Black
+		["§1"]="|cFF0000A0",	-- Dark Blue
+		["§2"]="|cFF00A000",	-- Dark Green
+		["§3"]="|cFF00A0A0",	-- Dark Aqua
+		["§4"]="|cFFA00000",	-- Dark Red
+		["§5"]="|cFFA000A0",	-- Purple
+		["§6"]="|cFFF0A000",	-- Gold
+		["§7"]="|cFFA0A0A0",	-- Grey
+		["§8"]="|cFF505050",	-- Dark Grey
+		["§9"]="|cFF5050F0",	-- Indigo
+		["§a"]="|cFF50F050",	-- Bright Green
+		["§b"]="|cFF50F0F0",	-- Aqua
+		["§c"]="|cFFF05050",	-- Red
+		["§d"]="|cFFF050F0",	-- Pink
+		["§e"]="|cFFF0F050",	-- Yellow
+		["§f"]="|cFFF0F0F0",	-- White
+		["§r"]="|r"				-- reset
+		["§T"]="|cFFAF96FF",	-- Title, (ltpurple)
+		["#c"]="|cFF", 			-- custom color
 		--["§E"] = "|cFFff1919",
 		
 	}
