@@ -1,4 +1,4 @@
-﻿--[[
+--[[
 ------------------------------------------------------------------------
 	Project: LibVan32
 	File: Core, revision @project-revision@
@@ -32,6 +32,11 @@ else
 	MINOR = MINOR + 99
 end
 
+-- GLOBALS: DEFAULT_CHAT_FRAME
+-- index locals for faster lookups
+local pairs = pairs
+local strgsub = string.gsub
+local pcall, error, type, unpack = pcall, error, type, unpack
 
 local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 
@@ -66,20 +71,19 @@ local function parseMessage(message)
 	}
 	local str, newStr = message
 	for k, v in pairs(cT) do
-		newStr = string.gsub(str, k, v)
+		newStr = strgsub(str, k, v)
 		str = newStr
 	end
 	return str
 end
 
 ---Sets the default chat frame used to print messages.
-
 --@usage YourAddon:SetDefaultChatFrame(ChatFrame2)
 --@param ChatFrame The frame you want to send messages to. It MUST have an .AddMessage entry
-function LibVan32:SetDefaultChatFrame(ChatFrame)
+function LibVan32:SetDefaultChatFrame(chatFrame)
 	if chatFrame and (not chatFrame.AddMessage) then error("invalid chatFrame specified", 2) end
 	
-	self._DefaultChatFrame = ChatFrame
+	self._DefaultChatFrame = chatFrame
 end
 
 
@@ -89,7 +93,7 @@ end
 --@param str The string that contains the color-codes.//(string)//
 --@return A string with library color codes replaced with the client's color escape sequence. (|cFFFFFFFF, for example)
 function LibVan32:ParseColorCodedString(str)
-	if type(str) ~= 'string' then error("bad argument #1 to \'ParseColorCodedString\', (string expected, got " .. type(message) ..")", 2) end
+	if type(str) ~= 'string' then error("bad argument #1 to \'ParseColorCodedString\', (string expected, got " .. type(str) ..")", 2) end
 	return parseMessage(str)
 end
 
@@ -255,7 +259,7 @@ function LibVan32:Embed(target, addonName)
 	end
 	-- Pass Lib variables to the addon as well on embed.
 	target._AddonRegisteredName = addonName
-	target._DefaultChatFrame = ChatFrame1
+	target._DefaultChatFrame = DEFAULT_CHAT_FRAME
 	target._DebugMode = false
 	
 	LibVan32.mixinTargets[target] = true
