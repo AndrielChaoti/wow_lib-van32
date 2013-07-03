@@ -42,7 +42,7 @@ local LibVan32, OLDMINOR = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not LibVan32 then return end -- No upgrade needed
 
--- Parse the $X Color codes from the PrintMessage function
+-- Parse the §X Color codes from the PrintMessage function
 local function parseMessage(message)
 	if not message then return end
 	local cT = {
@@ -65,9 +65,7 @@ local function parseMessage(message)
 		["§f"]="|cFFF0F0F0",	-- White
 		["§r"]="|r",			-- reset
 		["§T"]="|cFFAF96FF",	-- Title, (ltpurple)
-		["#c"]="|cFF", 			-- custom color
-		--["§E"] = "|cFFff1919",
-		
+		["#c"]="|cFF", 		-- custom color
 	}
 	local str, newStr = message
 	for k, v in pairs(cT) do
@@ -104,7 +102,7 @@ end
 -- @param message The message to print to the chat.//(string)//
 -- @param isError Whether or not to flag the message as an error.//(boolean)[optional]//
 -- @param isDebug Whether or not to flag the message as debug.//(boolean)[optional]//
---@param chatFrame The Frame to send the message through. This frame needs to have an AddMessage method.//(Frame)[optional]//
+-- @param chatFrame The Frame to send the message through. This frame needs to have an AddMessage method.//(Frame)[optional]//
 function LibVan32:PrintMessage(message, isError, isDebug, chatFrame)
 	if type(message) ~= 'string' then error("bad argument #1 to \'PrintMessage\', (string expected, got " .. type(message) ..")", 2) end
 	
@@ -147,7 +145,7 @@ end
 --This is the same as calling YourAddon:PrintMessage("message", true, isDebug)
 --@usage YourAddon:PrintErr("message", [isDebug], [chatFrame])
 --@param message The message to print to the chat frame.//(string)
---@param isDebug Also mark this message as a debug message.//(boolean)[optional]//\\(It's prefferred that you call :PrintDebug("message", true) for this)
+--@param isDebug Also mark this message as a debug message.//(boolean)[optional]//\\(It's preferred that you call :PrintDebug("message", true) for this)
 --@param chatFrame The Frame object to send the message to.//(Frame)[optional]//\\The frame requires the AddMessage method.
 function LibVan32:PrintErr(message, isDebug, chatFrame)
 	if type(message) ~= 'string' then error("bad argument #1 to \'PrintError\', (string expected, got " .. type(message) ..")", 2) end
@@ -160,14 +158,10 @@ LibVan32.timers = {}
 
 ---Create a recurring or single-tick timer.\\
 -- For example: calling a function after 5 seconds, or updating a list of objects every half-second
---@usage Timer = YourAddon:SetTimer(interval, callback, [recur, [uID]], [...])
---@param interval The delay, in seconds, that you want before excecuting //callback//.//(float)//
---@param callback The function to excecute when //interval// time has passed.//(function)//
---@param recur Whether or not the timer will repeat each //interval// seconds.//(boolean)//
---@param uID A Unique identifier assigned to a timer instance. You can use this, for instance, in a recursive function that iterates on a timer.//(anything)//\\Setting this field will deny creation of any new timers with the exact same uID. I reccomend using a string for this field, since it is global, however it will accept anything.
---@param ... A list of arguments to pass to //callback//.//(vararg)//
---@return The instance of the timer created, if successful, otherwise -1.
+--@usage DEPRECATED. Please find an alternative.
 function LibVan32:SetTimer(interval, callback, recur, uID, ...)
+	error("SetTimer is deprecated and no longer supported.", 2)
+	--[[
 	--Redundancy checks
 	if type(interval) ~= 'number' then error("bad argument #1 to \'SetTimer\', (number expected, got " .. type(interval) ..")", 2) end
 	if type(callback) ~= 'function' then error("bad argument #2 to \'SetTimer\', (function expected, got " .. type(callback) ..")", 2) end
@@ -191,20 +185,21 @@ function LibVan32:SetTimer(interval, callback, recur, uID, ...)
 	end
 	LibVan32.timers[timer] = timer
 	return timer
+	]]
 end
 
 ---Stop an existing timer. This function requires a timer instance created with :SetTimer()
---@usage YourAddon:KillTimer(timer)
---@param timer The timer you wish to stop.//(SetTimer timer)//
---@return This function returns nil if the timer was sucessfully stopped, making it easier for you to clear the variable you stored the timer instance in originally.\\If it did not find a timer, it will return the variable you sent to it, so that it's not completely lost.
+--@usage DEPRECATED. Please find an alternative.
 function LibVan32:KillTimer(timer)
+	error("KillTimer is deprecated and no longer supported.", 2)
+	--[[
 	if type(timer) ~= 'table' then error("bad argument #1 to \'KillTimer\', (table expected, got " .. type(timer) ..")", 2) end
 	if LibVan32.timers[timer] then
 		LibVan32.timers[timer] = nil
 		return nil
 	else
 		return timer
-	end
+	end]]
 end
 
 
@@ -234,8 +229,6 @@ CreateFrame("Frame"):SetScript("OnUpdate", OnUpdate)
 
 LibVan32.mixinTargets = LibVan32.mixinTargets or {}
 local mixins = {
-	"KillTimer",
-	"SetTimer",
 	"PrintMessage",
 	"PrintErr",
 	"PrintDebug",
