@@ -1,6 +1,6 @@
-##Title: Lib|cffAF96FFVan32|r
-##Notes: Private Library, for use with Van32's Addons
-##Interface: 60000
+##Title: Lib: Lib|cffAF96FFVan32|r-2.0
+##Notes: Library for use with Van32's Addons
+##Interface: 60200
 ##Version: @project-version@
 ##Dependencies: LibStub
 
