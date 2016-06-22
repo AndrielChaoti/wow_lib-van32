@@ -8,6 +8,7 @@
 --@class file
 --@name LibVan32-2.0
 --@version @file-revision@: @file-date-iso@
+
 --[[
 
 	Project Name: LibVan32-2.0
