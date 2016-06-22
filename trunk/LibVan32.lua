@@ -1,7 +1,7 @@
 ---A simple library for consolidating functions used often by Van32's addons
 --
--- **LibVan32-2.0** can be embeded into your addon, either explicitly by calling LibVan32:Embed(MyAddon, "MyAddonName") or by
--- specifying it as an embeded library in your AceAddon. All functions will be available on your addon object
+-- **LibVan32-2.0** can be embedded into your addon, either explicitly by calling LibVan32:Embed(MyAddon, "MyAddonName") or by
+-- specifying it as an embedded library in your AceAddon. All functions will be available on your addon object
 -- and can be accessed directly, without having to explicitly call LibVan32 itself.\\
 -- It is recommended to embed LibVan32, otherwise you'll have to specify a custom `self` on all calls you
 -- make into LibVan32.
@@ -89,7 +89,7 @@ local colorTable = {
 	["§e"]="|cFFF0F050",	-- Yellow
 	["§f"]="|cFFF0F0F0",	-- White
 	["§r"]="|r",			-- reset
-	["§T"]="|cFFAF96FF",	-- Title, (ltpurple)
+	["§T"]="|cFFAF96FF",	-- Title, (light purple)
 	["#c"]="|cFF", 		-- custom color
 }
 
@@ -116,7 +116,7 @@ local function checkChatFrame( chatFrame )
 	return chatFrame
 end
 
---- Set the default chat frame used for Print() calls when no frame is specificed.
+--- Set the default chat frame used for Print() calls when no frame is specified.
 --@name //addOn//:SetDefaultChatFrame
 --@paramsig chatFrame
 --@param chatFrame the name of the "ChatFrame" object to change the default to
@@ -240,7 +240,7 @@ local pmixins = {
 	_dfc = "DEFAULT_CHAT_FRAME",
 }
 
---- Handles addon embedding. This is best done as a mixin with AceAddon-3.0
+--- Handles addon embedding. This is best done as a mix-in with AceAddon-3.0
 --@name LibVan32:Embed
 --@paramsig object, name
 --@param object the table to embed the library into
