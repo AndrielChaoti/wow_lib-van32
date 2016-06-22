@@ -1,3 +1,13 @@
+---A simple library for consolidating functions used often by Van32's addons
+--
+-- **LibVan32-2.0** can be embeded into your addon, either explicitly by calling LibVan32:Embed(MyAddon, "MyAddonName") or by
+-- specifying it as an embeded library in your AceAddon. All functions will be available on your addon object
+-- and can be accessed directly, without having to explicitly call LibVan32 itself.\\
+-- It is recommended to embed LibVan32, otherwise you'll have to specify a custom `self` on all calls you
+-- make into LibVan32.
+--@class file
+--@name LibVan32-2.0
+--@version @file-revision@: @file-date-iso@
 --[[
 
 	Project Name: LibVan32-2.0
@@ -16,16 +26,7 @@
 --------------------
 local MAJOR, MINOR = "LibVan32-2.0", tonumber("@file-revision@")
 
----A simple library for consolidating functions used often by Van32's addons
---
--- **LibVan32-2.0** can be embeded into your addon, either explicitly by calling LibVan32:Embed(MyAddon, "MyAddonName") or by
--- specifying it as an embeded library in your AceAddon. All functions will be available on your addon object
--- and can be accessed directly, without having to explicitly call LibVan32 itself.\\
--- It is recommended to embed LibVan32, otherwise you'll have to specify a custom `self` on all calls you
--- make into LibVan32.
---@class file
---@name LibVan32-2.0
---@version @file-revision@: @file-date-iso@
+
 
 -- This is for debug builds
 --@do-not-package@
