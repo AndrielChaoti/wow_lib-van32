@@ -11,7 +11,7 @@ externals:
       url: svn://svn.wowace.com/wow/libstub/mainline/trunk
       tag: latest
    libs/!LibVan32:
-      url: svn://svn.curseforge.net/wow/libvan32/mainline/trunk
+      url: https://github.com/AndrielChaoti/wow_lib-van32.git
       tag: latest
 ```
 ### Download method
